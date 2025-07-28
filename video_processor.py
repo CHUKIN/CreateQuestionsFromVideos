@@ -255,16 +255,26 @@ Please analyze both Russian and English text appropriately.
             # Try to parse JSON response
             response_text = response['response'].strip()
             
-            # Extract JSON from response if it's wrapped in other text
-            json_match = re.search(r'\[.*\]', response_text, re.DOTALL)
-            if json_match:
-                json_text = json_match.group()
+            # Attempt to parse the entire response as JSON
+            try:
+                parsed_json = json.loads(response_text)
+                if isinstance(parsed_json, list):
+                    return parsed_json
+            except json.JSONDecodeError:
+                logger.warning("Response is not a valid JSON array. Attempting to extract JSON segments.")
+            
+            # Split response into potential JSON segments and parse each
+            json_segments = response_text.splitlines()
+            for segment in json_segments:
                 try:
-                    questions = json.loads(json_text)
-                    return questions if isinstance(questions, list) else []
+                    parsed_segment = json.loads(segment.strip())
+                    if isinstance(parsed_segment, list):
+                        return parsed_segment
                 except json.JSONDecodeError:
-                    logger.warning("Failed to parse JSON response from Ollama")
-                    return []
+                    continue
+            
+            logger.warning("Failed to extract valid JSON array from response.")
+            return []
             
             # Fallback: parse manually if JSON parsing fails
             return self._parse_questions_manually(response_text)
