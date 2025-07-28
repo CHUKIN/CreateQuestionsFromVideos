@@ -299,7 +299,7 @@ Please analyze both Russian and English text appropriately.
         current_question = {}
         for line in lines:
             line = line.strip()
-            if '?' in line and len(line) > 10:  # Likely a question
+            if '?' in line and len(line) > MIN_QUESTION_LENGTH:  # Likely a question
                 if current_question:
                     questions.append(current_question)
                 current_question = {
