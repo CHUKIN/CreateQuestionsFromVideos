@@ -158,11 +158,12 @@ def create_config():
         return False
     
     try:
-        config_template.read_text().replace(
+        content = config_template.read_text()
+        modified_content = content.replace(
             "config_template.py", 
             config_file.name
         )
-        config_file.write_text(config_template.read_text())
+        config_file.write_text(modified_content)
         print("✅ Created config.py from template")
         return True
     except Exception as e:
