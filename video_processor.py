@@ -194,8 +194,8 @@ class VideoProcessor:
         List[str]: List of text chunks
         """
         # Simple chunking by approximate token count
-        # Roughly 4 characters per token
-        chars_per_chunk = self.MAX_CHUNK_TOKENS * 4
+        # Calculate the maximum number of characters per chunk based on token limit
+        chars_per_chunk = self.MAX_CHUNK_TOKENS * CHARACTERS_PER_TOKEN
         
         chunks = []
         words = text.split()
