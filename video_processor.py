@@ -236,7 +236,7 @@ For each question, identify:
 
 Return the result as a JSON array where each item has:
 - "question": the exact question text
-- "speaker": "interviewer" or "interviewee" 
+- "speaker": "interviewer" or "interviewee"
 - "type": "technical", "behavioral", or "general"
 
 Transcript:
